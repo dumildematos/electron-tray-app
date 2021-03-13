@@ -4,7 +4,14 @@
     "description": "Open VS projects from tray menu.",
     "main": "main.js",
     "scripts": {
-        "start": "electron ."
+        "start": "electron .",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder",
+        "dist:all": "npm-run-all -p dist:*",
+        "dist:mac": "electron-builder --mac",
+        "dist:windows": "electron-builder --windows",
+        "dist:linux": "electron-builder --linux",
+        "postinstall": "electron-builder install-app-deps"
     },
     "repository": {
         "type": "git",
@@ -18,13 +25,38 @@
     },
     "homepage": "https://github.com/dumildematos/electron-tray-app#readme",
     "dependencies": {
-        "electron": "^12.0.1"
+        "@sentry/electron": "0.17.1",
+        "fix-path": "^2.1.0",
+        "npm-run-all": "^4.1.5"
     },
     "devDependencies": {
+        "electron": "^12.0.1",
         "cross-spawn": "^7.0.3",
         "electron-store": "^7.0.2",
+        "electron-builder": "^21.0.15",
         "eslint": "^7.22.0",
         "eslint-config-airbnb-base": "^14.2.1",
-        "eslint-plugin-import": "^2.22.1"
+        "eslint-plugin-import": "^2.22.1",
+        "nodemon": "^1.19.1"
+    },
+    "build": {
+        "appId": "your.id",
+        "productName": "Code Tray",
+        "mac": {
+            "category": "public.app-category.developer-tools"
+        },
+        "win": {
+            "signingHashAlgorithms": ["sha256"],
+            "icon": "build/icon.ico"
+        },
+        "linux": {
+            "category": "Utility",
+            "icon": "iconTemplate.png",
+            "target": [
+                "deb",
+                "snap",
+                "rpm"
+            ]
+        }
     }
 }
