@@ -1,6 +1,7 @@
 const { resolve, base, basename } = require('path')
-const { app, Tray, Menu, dialog } = require('electron');
+const { app, Tray, Menu, dialog, MenuItem } = require('electron');
 const Store = require('electron-store');
+const { spawn } = require('cross-spawn');
 
 const schema = {
     projects: {
@@ -11,27 +12,63 @@ const schema = {
 const store = new Store({ schema })
 
 app.whenReady().then(() => {
-
+    // store.clear();
     appIcon = new Tray('assets/iconTemplate.png');
     const storedProjects = store.get('projects');
     const projects = storedProjects ? JSON.parse(storedProjects) : [];
 
-    console.log(projects)
+    const items = projects.map((project) => {
+        return {
+            label: project.name,
+            click: () => {
+                spawn.sync('code', [project.path])
+            }
+        }
+    })
 
     const contextMenu = Menu.buildFromTemplate([{
-        label: 'Abrir',
-        type: 'radio',
-        checked: true,
+            type: 'separator'
+        }, {
+            label: 'Local',
+            submenu: [...items]
+        },
+        {
+            label: 'Remotos',
+            submenu: []
+        },
+        {
+            type: 'separator'
+        },
+        {
+            label: 'Configuração'
+        },
+        {
+            label: 'Fechar',
+            click: () => {
+                app.exit();
+            }
+        }
+    ])
+
+    contextMenu.insert(0, new MenuItem({
+        label: 'Adicionar novo Projecto',
         click: () => {
             const [path] = dialog.showOpenDialogSync({ properties: ['openDirectory'] })
-            store.set('projects', JSON.stringify([...projects, { path, name: basename(path) }]))
+            const name = basename(path)
+            store.set('projects', JSON.stringify([...projects, { path, name }]))
+
+            const item = new MenuItem({
+                label: name,
+                click: () => {
+                    spawn.sync('code', [path])
+
+                }
+            })
+
+            contextMenu.append(item)
+
         }
-    }, {
-        label: 'Fechar',
-        click: () => {
-            app.exit();
-        }
-    }])
+    }))
 
     // Make a change to the context menu
 
