@@ -1,5 +1,5 @@
 const { resolve, base, basename } = require('path')
-const { app, Tray, Menu, dialog, MenuItem } = require('electron');
+const { app, Tray, Menu, dialog, nativeImage } = require('electron');
 const Store = require('electron-store');
 const { spawn } = require('cross-spawn');
 
@@ -64,6 +64,10 @@ function render(tray = mainTray) {
     }));
 
     const contextMenu = Menu.buildFromTemplate([{
+            label: 'Visual Studio Code',
+            icon: nativeImage.createFromPath(__dirname + '/assets/iconTemplate.png').resize({ width: 16 }),
+        },
+        {
             label: locale.add,
             click: () => {
                 const result = dialog.showOpenDialog({ properties: ['openDirectory'] });
