@@ -1,20 +1,27 @@
 {
-  "name": "electron-tray-app",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dumildematos/electron-tray-app.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/dumildematos/electron-tray-app/issues"
-  },
-  "homepage": "https://github.com/dumildematos/electron-tray-app#readme"
+    "name": "electron-tray-app",
+    "version": "1.0.0",
+    "description": "",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dumildematos/electron-tray-app.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/dumildematos/electron-tray-app/issues"
+    },
+    "homepage": "https://github.com/dumildematos/electron-tray-app#readme",
+    "dependencies": {
+        "electron": "*"
+    },
+    "devDependencies": {
+        "electron-store": "^7.0.2",
+        "eslint": "^7.22.0"
+    }
 }
